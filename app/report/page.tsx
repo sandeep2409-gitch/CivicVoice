@@ -14,6 +14,7 @@ import Link from "next/link";
 import { saveReport } from "@/services/reportService";
 import ProtectedRoute from "@/app/components/ProtectedRoute";
 import { useAuth } from "@/app/context/AuthContext";
+import { getUserEmoji } from "@/lib/utils";
 
 function ReportPageContent() {
   const { user } = useAuth();
@@ -65,6 +66,34 @@ function ReportPageContent() {
 
     setSubmitting(true);
     try {
+      let imageUrl = null;
+      if (image) {
+        // Upload to Cloudinary
+        const formData = new FormData();
+        formData.append("file", image);
+        
+        // We will use environment variables that you'll set up
+        const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+        const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+        
+        if (cloudName && uploadPreset) {
+          formData.append("upload_preset", uploadPreset);
+          const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+            method: "POST",
+            body: formData,
+          });
+          
+          if (res.ok) {
+            const data = await res.json();
+            imageUrl = data.secure_url;
+          } else {
+            console.error("Cloudinary upload failed");
+          }
+        } else {
+          console.error("Cloudinary credentials are missing from .env.local");
+        }
+      }
+
       await saveReport({
         reporterName,
         reporterUid: user?.uid || null,
@@ -77,6 +106,7 @@ function ReportPageContent() {
         suggestedAction: result.suggestedAction,
         status: "Pending",
         confirmations: 0,
+        imageUrl: imageUrl,
       });
 
       setSubmitted(true);
@@ -88,22 +118,7 @@ function ReportPageContent() {
     }
   };
 
-  const analyzeIssue = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ description, location }),
-      });
-      const data = await res.json();
-      setResult(data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+
 
   const analyzeImage = async () => {
     if (!image) {
@@ -185,8 +200,8 @@ function ReportPageContent() {
 
         {/* Reporter info from auth */}
         <div className="bg-white border border-card-border rounded-lg p-3 flex items-center gap-3 mb-6 shadow-sm">
-          <div className="w-10 h-10 rounded-full bg-accent-blue flex items-center justify-center text-sm font-bold text-white shadow-sm">
-            {reporterName.charAt(0).toUpperCase()}
+          <div className="w-10 h-10 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-xl shadow-sm">
+            {getUserEmoji(user?.uid || user?.email || "")}
           </div>
           <div>
             <p className="text-sm font-bold text-gray-900">{reporterName}</p>
@@ -259,24 +274,11 @@ function ReportPageContent() {
           )}
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 pt-2">
-            <button
-              onClick={analyzeIssue}
-              disabled={loading || !description.trim()}
-              className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? (
-                <Loader2 size={16} className="animate-spin" />
-              ) : (
-                <FileText size={16} />
-              )}
-              {loading ? "Analyzing..." : "Analyze Text"}
-            </button>
-
+          <div className="pt-2">
             <button
               onClick={analyzeImage}
               disabled={loading || !image}
-              className="btn-secondary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <Loader2 size={16} className="animate-spin" />

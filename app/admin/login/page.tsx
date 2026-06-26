@@ -77,15 +77,12 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#030712] text-white flex items-center justify-center px-6">
-      {/* Background glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-b from-amber-600/8 via-orange-600/5 to-transparent rounded-full blur-3xl pointer-events-none" />
-
-      <div className="w-full max-w-md relative animate-fade-in">
+    <main className="min-h-screen bg-background text-foreground flex items-center justify-center px-6">
+      <div className="w-full max-w-md relative animate-fade-in insta-card p-8">
         {/* Back link */}
         <Link
           href="/login"
-          className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-300 transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-8"
         >
           <ArrowLeft size={14} />
           Back to citizen login
@@ -93,20 +90,20 @@ export default function AdminLoginPage() {
 
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/20">
-            <Shield size={24} />
-          </div>
-          <h1 className="text-3xl font-extrabold tracking-tight">
+          <Link href="/" className="inline-block mb-6">
+            <img src="/logo.png" alt="Citizen Voice Logo" className="h-16 w-auto mx-auto" />
+          </Link>
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
             Admin Login
           </h1>
-          <p className="text-slate-400 mt-2 text-sm">
+          <p className="text-gray-500 mt-2 text-sm">
             Sign in with your administrator credentials.
           </p>
         </div>
 
         {/* Error */}
         {error && (
-          <div className="flex items-start gap-2 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm mb-6 animate-fade-in">
+          <div className="flex items-start gap-2 px-4 py-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm mb-6 animate-fade-in">
             <AlertCircle size={16} className="flex-shrink-0 mt-0.5" />
             {error}
           </div>
@@ -115,7 +112,7 @@ export default function AdminLoginPage() {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="flex items-center gap-2 text-sm text-slate-400 mb-2 font-medium">
+            <label className="flex items-center gap-2 text-sm text-gray-700 mb-2 font-medium">
               <Mail size={14} />
               Admin Email
             </label>
@@ -131,7 +128,7 @@ export default function AdminLoginPage() {
           </div>
 
           <div>
-            <label className="flex items-center gap-2 text-sm text-slate-400 mb-2 font-medium">
+            <label className="flex items-center gap-2 text-sm text-gray-700 mb-2 font-medium">
               <Lock size={14} />
               Password
             </label>
@@ -149,7 +146,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full justify-center text-base mt-2 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all bg-gradient-to-r from-amber-500 to-orange-600 hover:shadow-lg hover:shadow-amber-500/20 hover:-translate-y-0.5"
+            className="w-full justify-center text-base mt-4 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-gray-900 hover:bg-gray-800 transition-all"
           >
             {loading ? (
               <Loader2 size={18} className="animate-spin" />
@@ -160,7 +157,7 @@ export default function AdminLoginPage() {
           </button>
         </form>
 
-        <p className="text-xs text-slate-600 text-center mt-6">
+        <p className="text-xs text-gray-400 text-center mt-6">
           Only authorized administrators can access this portal.
         </p>
       </div>

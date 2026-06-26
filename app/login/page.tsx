@@ -10,7 +10,6 @@ import {
   Loader2,
   ArrowRight,
   AlertCircle,
-  Sparkles,
   Shield,
 } from "lucide-react";
 import Link from "next/link";
@@ -83,20 +82,17 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#030712] text-white flex items-center justify-center px-6">
-      {/* Background glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-b from-blue-600/8 via-purple-600/5 to-transparent rounded-full blur-3xl pointer-events-none" />
-
-      <div className="w-full max-w-md relative animate-fade-in">
+    <main className="min-h-screen bg-background text-foreground flex items-center justify-center px-6">
+      <div className="w-full max-w-md relative animate-fade-in insta-card p-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/20">
-            <Sparkles size={24} />
-          </div>
-          <h1 className="text-3xl font-extrabold tracking-tight">
+          <Link href="/" className="inline-block mb-6">
+            <img src="/logo.png" alt="Citizen Voice Logo" className="h-16 w-auto mx-auto" />
+          </Link>
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
             {isSignUp ? "Create Account" : "Welcome Back"}
           </h1>
-          <p className="text-slate-400 mt-2 text-sm">
+          <p className="text-gray-500 mt-2 text-sm">
             {isSignUp
               ? "Join your community and start reporting civic issues."
               : "Sign in to continue to Citizen Voice."}
@@ -105,7 +101,7 @@ export default function LoginPage() {
 
         {/* Error */}
         {error && (
-          <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm mb-6 animate-fade-in">
+          <div className="flex items-center gap-2 px-4 py-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm mb-6 animate-fade-in">
             <AlertCircle size={16} className="flex-shrink-0" />
             {error}
           </div>
@@ -115,7 +111,7 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {isSignUp && (
             <div>
-              <label className="flex items-center gap-2 text-sm text-slate-400 mb-2 font-medium">
+              <label className="flex items-center gap-2 text-sm text-gray-700 mb-2 font-medium">
                 <User size={14} />
                 Full Name
               </label>
@@ -131,7 +127,7 @@ export default function LoginPage() {
           )}
 
           <div>
-            <label className="flex items-center gap-2 text-sm text-slate-400 mb-2 font-medium">
+            <label className="flex items-center gap-2 text-sm text-gray-700 mb-2 font-medium">
               <Mail size={14} />
               Email
             </label>
@@ -147,7 +143,7 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="flex items-center gap-2 text-sm text-slate-400 mb-2 font-medium">
+            <label className="flex items-center gap-2 text-sm text-gray-700 mb-2 font-medium">
               <Lock size={14} />
               Password
             </label>
@@ -166,7 +162,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="btn-primary w-full justify-center text-base mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn-primary w-full justify-center text-base mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <Loader2 size={18} className="animate-spin" />
@@ -182,24 +178,24 @@ export default function LoginPage() {
         </form>
 
         {/* Toggle */}
-        <div className="mt-6 text-center text-sm text-slate-400">
+        <div className="mt-6 text-center text-sm text-gray-500">
           {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
           <button
             onClick={() => {
               setIsSignUp(!isSignUp);
               setError("");
             }}
-            className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+            className="text-accent-blue hover:text-blue-700 font-semibold transition-colors"
           >
             {isSignUp ? "Sign In" : "Sign Up"}
           </button>
         </div>
 
         {/* Admin link */}
-        <div className="mt-8 pt-6 border-t border-slate-800/60 text-center">
+        <div className="mt-8 pt-6 border-t border-gray-200 text-center">
           <Link
             href="/admin/login"
-            className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-300 transition-colors"
+            className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-gray-600 font-medium transition-colors"
           >
             <Shield size={14} />
             Admin Login

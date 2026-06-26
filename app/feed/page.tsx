@@ -10,6 +10,7 @@ import {
   orderBy,
   query,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import {
   Heart,
@@ -20,13 +21,17 @@ import {
   MapPin,
   Loader2,
   AlertCircle,
+  Trash2,
 } from "lucide-react";
+import { getUserEmoji } from "@/lib/utils";
 import ProtectedRoute from "@/app/components/ProtectedRoute";
+import { useAuth } from "@/app/context/AuthContext";
 
 function FeedPageContent() {
   const [reports, setReports] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     const q = query(
@@ -57,6 +62,16 @@ function FeedPageContent() {
       console.error(error);
     } finally {
       setConfirmingId(null);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this report?")) return;
+    try {
+      await deleteDoc(doc(db, "reports", id));
+    } catch (error) {
+      console.error("Error deleting report:", error);
+      alert("Failed to delete report.");
     }
   };
 
@@ -108,17 +123,14 @@ function FeedPageContent() {
       <div className="flex flex-col gap-6 md:gap-8">
         {reports.map((report) => {
           const reporter = report.reporterName || "anonymous";
-          const initial = reporter.charAt(0).toUpperCase();
 
           return (
             <article key={report.id} className="bg-white md:border md:border-card-border md:rounded-sm">
               {/* Post Header */}
               <div className="flex items-center justify-between p-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 p-[2px]">
-                    <div className="w-full h-full bg-white rounded-full flex items-center justify-center border-2 border-white">
-                      <span className="text-[10px] font-bold text-gray-800">{initial}</span>
-                    </div>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-xl bg-blue-50 border border-blue-100 shadow-sm">
+                    {getUserEmoji(report.reporterUid)}
                   </div>
                   <div className="flex flex-col">
                     <div className="flex items-center gap-1.5">
@@ -130,19 +142,43 @@ function FeedPageContent() {
                     )}
                   </div>
                 </div>
-                <button className="p-2 -mr-2">
-                  <MoreHorizontal size={20} className="text-gray-900" />
-                </button>
+                {user?.uid === report.reporterUid ? (
+                  <button 
+                    onClick={() => handleDelete(report.id)}
+                    className="p-2 -mr-2 text-red-500 hover:bg-red-50 rounded-full transition-colors"
+                    title="Delete Post"
+                  >
+                    <Trash2 size={20} />
+                  </button>
+                ) : (
+                  <button className="p-2 -mr-2">
+                    <MoreHorizontal size={20} className="text-gray-900" />
+                  </button>
+                )}
               </div>
 
-              {/* Post Media (Placeholder block for category since no images) */}
-              <div className={`w-full aspect-square ${getCategoryColor(report.category)} flex flex-col items-center justify-center p-8 text-center border-y border-gray-100`}>
-                 <h2 className="text-4xl font-bold mb-4 opacity-90">{report.category}</h2>
-                 <div className="flex items-center gap-2 bg-white/50 backdrop-blur-sm px-4 py-2 rounded-full font-semibold">
-                   <AlertCircle size={18} />
-                   {report.severity} Priority
-                 </div>
-              </div>
+              {/* Post Media */}
+              {report.imageUrl ? (
+                <div className="w-full relative bg-gray-100 border-y border-gray-100">
+                  <img 
+                    src={report.imageUrl} 
+                    alt={report.category} 
+                    className="w-full h-auto object-cover max-h-[600px]"
+                  />
+                  <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full font-semibold text-sm shadow-sm">
+                    <AlertCircle size={14} className={report.severity === "High" ? "text-red-500" : report.severity === "Medium" ? "text-orange-500" : "text-yellow-500"} />
+                    {report.severity} Priority
+                  </div>
+                </div>
+              ) : (
+                <div className={`w-full aspect-square ${getCategoryColor(report.category)} flex flex-col items-center justify-center p-8 text-center border-y border-gray-100 relative`}>
+                   <h2 className="text-4xl font-bold mb-4 opacity-90">{report.category}</h2>
+                   <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full font-semibold text-sm shadow-sm text-gray-900">
+                     <AlertCircle size={14} className={report.severity === "High" ? "text-red-500" : report.severity === "Medium" ? "text-orange-500" : "text-yellow-500"} />
+                     {report.severity} Priority
+                   </div>
+                </div>
+              )}
 
               {/* Action Bar */}
               <div className="p-3 pb-2">

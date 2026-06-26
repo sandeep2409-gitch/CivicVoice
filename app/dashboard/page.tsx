@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { getUserEmoji } from "@/lib/utils";
 import {
   PieChart,
   Pie,
@@ -16,7 +17,6 @@ import {
   CheckCircle2,
   AlertTriangle,
   TrendingUp,
-  User,
 } from "lucide-react";
 import ProtectedRoute from "@/app/components/ProtectedRoute";
 
@@ -61,10 +61,10 @@ function DashboardPageContent() {
   };
 
   const getPriorityColor = (score: number) => {
-    if (score >= 120) return "text-red-400";
-    if (score >= 80) return "text-orange-400";
-    if (score >= 40) return "text-yellow-400";
-    return "text-slate-400";
+    if (score >= 120) return "text-red-600";
+    if (score >= 80) return "text-orange-500";
+    if (score >= 40) return "text-yellow-600";
+    return "text-gray-500";
   };
 
   const totalReports = reports.length;
@@ -89,44 +89,44 @@ function DashboardPageContent() {
       label: "Total Reports",
       value: totalReports,
       icon: FileText,
-      color: "text-blue-400",
-      bgColor: "bg-blue-500/10",
-      borderColor: "border-blue-500/20",
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
+      borderColor: "border-blue-100",
     },
     {
       label: "Pending",
       value: pendingReports,
       icon: Clock,
-      color: "text-yellow-400",
-      bgColor: "bg-yellow-500/10",
-      borderColor: "border-yellow-500/20",
+      color: "text-yellow-600",
+      bgColor: "bg-yellow-50",
+      borderColor: "border-yellow-100",
     },
     {
       label: "Resolved",
       value: resolvedReports,
       icon: CheckCircle2,
-      color: "text-emerald-400",
-      bgColor: "bg-emerald-500/10",
-      borderColor: "border-emerald-500/20",
+      color: "text-emerald-600",
+      bgColor: "bg-emerald-50",
+      borderColor: "border-emerald-100",
     },
     {
       label: "High Severity",
       value: highSeverity,
       icon: AlertTriangle,
-      color: "text-red-400",
-      bgColor: "bg-red-500/10",
-      borderColor: "border-red-500/20",
+      color: "text-red-600",
+      bgColor: "bg-red-50",
+      borderColor: "border-red-100",
     },
   ];
 
   return (
-    <main className="min-h-screen bg-[#030712] text-white">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="mb-10 animate-fade-in">
-          <h1 className="text-4xl font-extrabold tracking-tight mb-2">
+          <h1 className="text-3xl font-bold tracking-tight mb-2 text-gray-900">
             Dashboard
           </h1>
-          <p className="text-slate-400">
+          <p className="text-gray-500">
             Live overview of civic issues across your community.
           </p>
         </div>
@@ -138,17 +138,17 @@ function DashboardPageContent() {
             return (
               <div
                 key={stat.label}
-                className="stat-card animate-slide-up"
+                className="insta-card p-6 animate-slide-up"
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div
-                    className={`w-9 h-9 rounded-lg ${stat.bgColor} border ${stat.borderColor} flex items-center justify-center`}
+                    className={`w-10 h-10 rounded-full ${stat.bgColor} border ${stat.borderColor} flex items-center justify-center`}
                   >
-                    <Icon size={16} className={stat.color} />
+                    <Icon size={20} className={stat.color} />
                   </div>
-                  <p className="text-sm text-slate-400">{stat.label}</p>
+                  <p className="text-sm font-medium text-gray-500">{stat.label}</p>
                 </div>
-                <p className={`text-3xl font-bold ${stat.color}`}>
+                <p className={`text-4xl font-bold ${stat.color}`}>
                   {stat.value}
                 </p>
               </div>
@@ -158,9 +158,9 @@ function DashboardPageContent() {
 
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Pie Chart */}
-          <div className="glass-card p-6 animate-slide-up">
-            <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-              <TrendingUp size={18} className="text-blue-400" />
+          <div className="insta-card p-6 animate-slide-up">
+            <h2 className="text-lg font-bold mb-6 flex items-center gap-2 text-gray-900">
+              <TrendingUp size={20} className="text-blue-500" />
               Issue Status Overview
             </h2>
 
@@ -184,10 +184,11 @@ function DashboardPageContent() {
                   </Pie>
                   <Tooltip
                     contentStyle={{
-                      background: "#0f172a",
-                      border: "1px solid #334155",
+                      background: "#ffffff",
+                      border: "1px solid #e2e8f0",
                       borderRadius: "0.75rem",
-                      color: "#f1f5f9",
+                      color: "#0f172a",
+                      boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
                     }}
                   />
                 </PieChart>
@@ -196,9 +197,9 @@ function DashboardPageContent() {
           </div>
 
           {/* Priority Ranking */}
-          <div className="glass-card p-6 animate-slide-up">
-            <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-              <AlertTriangle size={18} className="text-red-400" />
+          <div className="insta-card p-6 animate-slide-up">
+            <h2 className="text-lg font-bold mb-6 flex items-center gap-2 text-gray-900">
+              <AlertTriangle size={20} className="text-red-500" />
               AI Priority Ranking
             </h2>
 
@@ -206,23 +207,23 @@ function DashboardPageContent() {
               {prioritizedReports.slice(0, 5).map((report: any, index: number) => (
                 <div
                   key={report.id}
-                  className="flex items-center gap-4 p-4 rounded-xl bg-slate-900/50 border border-slate-800/50 hover:border-slate-700/60 transition-all"
+                  className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 border border-gray-100 hover:border-gray-200 transition-all"
                 >
-                  <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-sm font-bold text-slate-400 flex-shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center text-sm font-bold text-gray-700 flex-shrink-0">
                     {index + 1}
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm truncate">
+                    <p className="font-semibold text-sm text-gray-900 truncate">
                       {report.category}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs text-slate-500 flex items-center gap-1">
-                        <User size={10} />
+                      <span className="text-xs text-gray-500 flex items-center gap-1.5">
+                        <span className="text-sm">{getUserEmoji(report.reporterUid)}</span>
                         {report.reporterName || "Anonymous"}
                       </span>
-                      <span className="text-xs text-slate-600">·</span>
-                      <span className="text-xs text-slate-500">
+                      <span className="text-xs text-gray-300">·</span>
+                      <span className="text-xs font-medium text-gray-500">
                         {report.confirmations || 0} confirms
                       </span>
                     </div>
@@ -232,7 +233,7 @@ function DashboardPageContent() {
                     <p className={`text-sm font-bold ${getPriorityColor(report.priorityScore)}`}>
                       {report.priorityScore}
                     </p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs font-medium text-gray-500">
                       {getPriorityLabel(report.priorityScore)}
                     </p>
                   </div>
@@ -240,7 +241,7 @@ function DashboardPageContent() {
               ))}
 
               {reports.length === 0 && (
-                <p className="text-sm text-slate-500 text-center py-8">
+                <p className="text-sm text-gray-500 text-center py-8">
                   No reports yet.
                 </p>
               )}

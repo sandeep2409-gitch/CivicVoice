@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/app/context/AuthContext";
 import ProtectedRoute from "@/app/components/ProtectedRoute";
-import { AlertTriangle, MapPin, Loader2 } from "lucide-react";
+import { AlertTriangle, MapPin, Loader2, Trash2 } from "lucide-react";
+
+import { getUserEmoji } from "@/lib/utils";
 
 function ProfilePageContent() {
   const { user, logout } = useAuth();
@@ -45,6 +47,17 @@ function ProfilePageContent() {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this report?")) return;
+    try {
+      await deleteDoc(doc(db, "reports", id));
+      setReports((prev) => prev.filter((r) => r.id !== id));
+    } catch (error) {
+      console.error("Error deleting report:", error);
+      alert("Failed to delete report.");
+    }
+  };
+
   const getSeverityBadge = (severity: string) => {
     switch (severity?.toLowerCase()) {
       case "high":
@@ -74,8 +87,8 @@ function ProfilePageContent() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 md:py-12">
         {/* Profile Header */}
         <div className="flex flex-col items-center mb-10 animate-fade-in">
-          <div className="w-24 h-24 rounded-full bg-accent-blue text-white flex items-center justify-center text-3xl font-bold mb-4 shadow-md">
-            {(user?.displayName || user?.email || "U").charAt(0).toUpperCase()}
+          <div className="w-24 h-24 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-5xl mb-4 shadow-sm">
+            {getUserEmoji(user?.uid || user?.email || "")}
           </div>
           <h1 className="text-2xl font-bold text-gray-900">
             {user?.displayName || "Citizen"}
@@ -133,9 +146,18 @@ function ProfilePageContent() {
                           : "Recently"}
                       </span>
                     </div>
-                    <span className={getStatusBadge(report.status)}>
-                      {report.status}
-                    </span>
+                    <div className="flex items-center gap-3">
+                      <span className={getStatusBadge(report.status)}>
+                        {report.status}
+                      </span>
+                      <button
+                        onClick={() => handleDelete(report.id)}
+                        className="text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors"
+                        title="Delete Post"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
                   </div>
                   
                   <div className="p-4">
