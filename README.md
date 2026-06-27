@@ -2,17 +2,8 @@
 
 **Civic Voice** is an AI-powered community platform designed to bridge the gap between citizens and local authorities, enabling faster resolution of civic issues.
 
----
-
-## 🔗 Submission Links
-
-* **Deployed Application Link (Google Cloud):** [Insert your Google Cloud deployment link here]
-* **GitHub Repository Link:** [Insert your GitHub repo link here]
-* **Project Description (Google Doc):** [Insert your Google Doc link here]
-
----
-
 ## 📝 Project Description (For Hackathon Submission)
+
 
 *Note: The following section contains all the required information needed to generate the mandatory Project Description Google Doc submission.*
 
