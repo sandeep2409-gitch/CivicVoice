@@ -2,23 +2,23 @@
 
 **Civic Voice** is an AI-powered community platform designed to bridge the gap between citizens and local authorities, enabling faster resolution of civic issues.
 
-## 📝 Project Description (For Hackathon Submission)
+## 📝 Project Description
 
-### Problem Statement Selected
+### Problem Statement:
 In many rapidly growing cities, there is a severe disconnect between the community and local administration. Citizens often struggle to report civic issues (such as broken infrastructure, sanitation problems, or traffic hazards) through complicated, outdated channels. When reports are finally made, administrators are overwhelmed with unorganized, duplicate complaints and lack a reliable way to prioritize them based on actual urgency, leading to delayed resolutions and community frustration.
 
-### Solution Overview
+### Solution Overview:
 **Civic Voice** solves this by providing a hyper-streamlined, AI-powered issue reporting and tracking platform. Citizens can instantly report problems by simply snapping a photo and writing a brief caption. Behind the scenes, the platform leverages Google Gemini AI to automatically analyze the image and text, categorizing the issue and assigning an objective severity score. 
 
 The platform then routes this into a unified Community Feed, where neighbors can upvote ("confirm") issues to increase their priority. Administrators receive a clean, data-rich Dashboard that automatically ranks incoming reports based on the AI's severity assessment and community velocity, allowing them to instantly identify and resolve the most critical problems.
 
-### Key Features
+### Key Features:
 * **AI-Assisted Reporting:** Citizens upload photos and brief descriptions; AI automatically categorizes the issue (e.g., Infrastructure, Sanitation, Safety) and assigns a priority level.
 * **Community Validation:** A real-time, interactive feed allows local residents to view and "confirm" nearby issues, boosting their visibility and priority score.
 * **Intelligent Admin Dashboard:** A locked-down command center for authorities that aggregates reports, provides live data visualizations of issue statuses, and ranks complaints using an algorithm combining AI severity and community confirmations.
 * **Transparent Resolution Tracking:** When admins mark an issue as "Resolved," the community feed instantly updates with a prominent watermark, closing the feedback loop and building trust.
 
-### Technologies Used
+### Technologies Used:
 * **Frontend Framework:** Next.js (App Router, React 18)
 * **Styling & UI:** Tailwind CSS, Lucide React (Icons)
 * **Data Visualization:** Recharts
@@ -26,8 +26,8 @@ The platform then routes this into a unified Community Feed, where neighbors can
 * **Authentication:** Firebase Auth
 * **Image Hosting:** Cloudinary
 
-### Google Technologies Utilized
-1. **Google Gemini API (`gemini-3.1-flash-lite`):** 
+### Google Technologies Utilized:
+1. **Google Gemini API:** 
    * Used as the core intelligence engine for the platform. It processes the raw, unstructured issue descriptions provided by users and returns structured, JSON-formatted data containing the issue's category, a concise summary, suggested administrative actions, and a critical severity ranking (High, Medium, Low).
 2. **Google Cloud Platform (GCP):** 
    * The application is deployed and hosted on Google Cloud infrastructure for reliable, scalable production access.
