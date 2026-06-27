@@ -4,9 +4,6 @@
 
 ## 📝 Project Description (For Hackathon Submission)
 
-
-*Note: The following section contains all the required information needed to generate the mandatory Project Description Google Doc submission.*
-
 ### Problem Statement Selected
 In many rapidly growing cities, there is a severe disconnect between the community and local administration. Citizens often struggle to report civic issues (such as broken infrastructure, sanitation problems, or traffic hazards) through complicated, outdated channels. When reports are finally made, administrators are overwhelmed with unorganized, duplicate complaints and lack a reliable way to prioritize them based on actual urgency, leading to delayed resolutions and community frustration.
 
