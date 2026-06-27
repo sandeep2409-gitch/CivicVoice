@@ -104,29 +104,30 @@ function FeedPageContent() {
   };
 
   return (
-    <div className="w-full max-w-[470px] mx-auto pt-6 pb-20">
-      {/* Feed Header (Mobile only) */}
-      <div className="md:hidden flex justify-between items-center px-4 mb-4">
-        <img src="/logo.png" alt="Citizen Voice Logo" className="h-10 w-auto" />
-        <div className="flex gap-4">
-          <Heart size={24} />
-          <MessageCircle size={24} />
+    <main className="min-h-screen bg-[#FAFAFA] pt-24 pb-24 px-4 sm:px-6">
+      <div className="w-full max-w-xl mx-auto">
+        {/* Feed Header */}
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-serif font-bold text-slate-900">Community Feed</h1>
+          <div className="flex gap-4 md:hidden">
+            <Heart size={24} className="text-slate-700" />
+            <MessageCircle size={24} className="text-slate-700" />
+          </div>
         </div>
-      </div>
 
-      {loading && (
-        <div className="flex items-center gap-3 text-gray-400 py-12 justify-center">
-          <Loader2 size={24} className="animate-spin text-gray-300" />
-        </div>
-      )}
+        {loading && (
+          <div className="flex items-center gap-3 text-slate-400 py-12 justify-center">
+            <Loader2 size={24} className="animate-spin text-slate-300" />
+          </div>
+        )}
 
-      <div className="flex flex-col gap-6 md:gap-8">
-        {reports.map((report) => {
-          const reporter = report.reporterName || "anonymous";
+        <div className="flex flex-col gap-8">
+          {reports.map((report) => {
+            const reporter = report.reporterName || "anonymous";
 
-          return (
-            <article key={report.id} className="bg-white md:border md:border-card-border md:rounded-sm">
-              {/* Post Header */}
+            return (
+              <article key={report.id} className="bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.02)] border border-gray-200 overflow-hidden">
+                {/* Post Header */}
               <div className="flex items-center justify-between p-3">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full flex items-center justify-center text-xl bg-blue-50 border border-blue-100 shadow-sm">
@@ -134,11 +135,11 @@ function FeedPageContent() {
                   </div>
                   <div className="flex flex-col">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[14px] font-semibold text-gray-900 leading-none">{reporter}</span>
-                      <span className="text-[14px] text-gray-500 leading-none">• {getTimeAgo(report.createdAt)}</span>
+                      <span className="text-[14px] font-semibold text-slate-900 leading-none">{reporter}</span>
+                      <span className="text-[14px] text-slate-500 leading-none">• {getTimeAgo(report.createdAt)}</span>
                     </div>
                     {report.location && (
-                      <span className="text-[12px] text-gray-500 leading-none mt-1">Location shared</span>
+                      <span className="text-[12px] text-slate-500 leading-none mt-1">Location shared</span>
                     )}
                   </div>
                 </div>
@@ -159,21 +160,35 @@ function FeedPageContent() {
 
               {/* Post Media */}
               {report.imageUrl ? (
-                <div className="w-full relative bg-gray-100 border-y border-gray-100">
+                <div className="w-full relative bg-gray-100 border-y border-gray-100 overflow-hidden">
                   <img 
                     src={report.imageUrl} 
                     alt={report.category} 
-                    className="w-full h-auto object-cover max-h-[600px]"
+                    className={`w-full h-auto object-cover max-h-[600px] transition-all ${report.status === "Resolved" ? "grayscale opacity-80" : ""}`}
                   />
-                  <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full font-semibold text-sm shadow-sm">
+                  {report.status === "Resolved" && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-white/20 z-10 pointer-events-none">
+                      <div className="transform -rotate-12 border-4 border-emerald-500 text-emerald-500 bg-white/80 font-bold text-4xl sm:text-6xl px-8 py-2 rounded-lg opacity-90 shadow-lg">
+                        RESOLVED
+                      </div>
+                    </div>
+                  )}
+                  <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full font-semibold text-sm shadow-sm z-20">
                     <AlertCircle size={14} className={report.severity === "High" ? "text-red-500" : report.severity === "Medium" ? "text-orange-500" : "text-yellow-500"} />
                     {report.severity} Priority
                   </div>
                 </div>
               ) : (
-                <div className={`w-full aspect-square ${getCategoryColor(report.category)} flex flex-col items-center justify-center p-8 text-center border-y border-gray-100 relative`}>
-                   <h2 className="text-4xl font-bold mb-4 opacity-90">{report.category}</h2>
-                   <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full font-semibold text-sm shadow-sm text-gray-900">
+                <div className={`w-full aspect-square ${getCategoryColor(report.category)} flex flex-col items-center justify-center p-8 text-center border-y border-gray-100 relative overflow-hidden`}>
+                   <h2 className={`text-4xl font-bold mb-4 opacity-90 ${report.status === "Resolved" ? "opacity-50" : ""}`}>{report.category}</h2>
+                   {report.status === "Resolved" && (
+                     <div className="absolute inset-0 flex items-center justify-center bg-white/20 z-10 pointer-events-none">
+                       <div className="transform -rotate-12 border-4 border-emerald-500 text-emerald-500 bg-white/80 font-bold text-4xl sm:text-6xl px-8 py-2 rounded-lg opacity-90 shadow-lg">
+                         RESOLVED
+                       </div>
+                     </div>
+                   )}
+                   <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full font-semibold text-sm shadow-sm text-gray-900 z-20">
                      <AlertCircle size={14} className={report.severity === "High" ? "text-red-500" : report.severity === "Medium" ? "text-orange-500" : "text-yellow-500"} />
                      {report.severity} Priority
                    </div>
@@ -235,16 +250,17 @@ function FeedPageContent() {
         })}
 
         {!loading && reports.length === 0 && (
-          <div className="text-center py-20 text-gray-500">
-            <div className="w-16 h-16 border-2 border-gray-300 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="text-center py-20 text-slate-500 bg-white rounded-xl border border-gray-200 shadow-sm p-8">
+            <div className="w-16 h-16 border-2 border-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
               <AlertCircle size={32} className="text-gray-300" />
             </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">No Reports Yet</h2>
+            <h2 className="text-xl font-bold text-slate-900 mb-2">No Reports Yet</h2>
             <p className="text-sm">When community members report issues, they&apos;ll appear here.</p>
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </main>
   );
 }
 

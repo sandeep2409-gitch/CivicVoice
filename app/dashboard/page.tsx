@@ -120,13 +120,13 @@ function DashboardPageContent() {
   ];
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      <div className="max-w-7xl mx-auto px-6 py-12">
+    <main className="min-h-screen bg-[#FAFAFA] pt-24 pb-20 md:pb-12">
+      <div className="max-w-7xl mx-auto px-6">
         <div className="mb-10 animate-fade-in">
-          <h1 className="text-3xl font-bold tracking-tight mb-2 text-gray-900">
+          <h1 className="text-4xl font-bold font-serif tracking-tight mb-2 text-slate-900">
             Dashboard
           </h1>
-          <p className="text-gray-500">
+          <p className="text-slate-500 text-lg">
             Live overview of civic issues across your community.
           </p>
         </div>
@@ -138,17 +138,17 @@ function DashboardPageContent() {
             return (
               <div
                 key={stat.label}
-                className="insta-card p-6 animate-slide-up"
+                className="bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.02)] border border-gray-200 p-6 animate-slide-up"
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div
-                    className={`w-10 h-10 rounded-full ${stat.bgColor} border ${stat.borderColor} flex items-center justify-center`}
+                    className={`w-10 h-10 rounded-md ${stat.bgColor} border ${stat.borderColor} flex items-center justify-center`}
                   >
                     <Icon size={20} className={stat.color} />
                   </div>
-                  <p className="text-sm font-medium text-gray-500">{stat.label}</p>
+                  <p className="text-sm font-semibold text-slate-600">{stat.label}</p>
                 </div>
-                <p className={`text-4xl font-bold ${stat.color}`}>
+                <p className={`text-4xl font-bold font-serif ${stat.color}`}>
                   {stat.value}
                 </p>
               </div>
@@ -158,8 +158,8 @@ function DashboardPageContent() {
 
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Pie Chart */}
-          <div className="insta-card p-6 animate-slide-up">
-            <h2 className="text-lg font-bold mb-6 flex items-center gap-2 text-gray-900">
+          <div className="bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.02)] border border-gray-200 p-6 animate-slide-up">
+            <h2 className="text-lg font-serif font-bold mb-6 flex items-center gap-2 text-slate-900">
               <TrendingUp size={20} className="text-blue-500" />
               Issue Status Overview
             </h2>
@@ -197,8 +197,8 @@ function DashboardPageContent() {
           </div>
 
           {/* Priority Ranking */}
-          <div className="insta-card p-6 animate-slide-up">
-            <h2 className="text-lg font-bold mb-6 flex items-center gap-2 text-gray-900">
+          <div className="bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.02)] border border-gray-200 p-6 animate-slide-up">
+            <h2 className="text-lg font-serif font-bold mb-6 flex items-center gap-2 text-slate-900">
               <AlertTriangle size={20} className="text-red-500" />
               AI Priority Ranking
             </h2>
@@ -255,7 +255,7 @@ function DashboardPageContent() {
 
 export default function DashboardPage() {
   return (
-    <ProtectedRoute>
+    <ProtectedRoute requiredRole="admin">
       <DashboardPageContent />
     </ProtectedRoute>
   );

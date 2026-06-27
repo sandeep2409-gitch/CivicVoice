@@ -27,7 +27,7 @@ export default function Navbar() {
   const navItems = [
     { href: "/", label: "Home", icon: Home, show: true },
     { href: "/feed", label: "Search", icon: Search, show: true },
-    { href: "/report", label: "Create", icon: PlusSquare, show: !!user },
+    { href: "/report", label: "Create", icon: PlusSquare, show: !!user && role !== "admin" },
     {
       href: "/dashboard",
       label: "Dashboard",
@@ -47,11 +47,11 @@ export default function Navbar() {
   return (
     <>
       {/* Desktop Top Nav */}
-      <nav className="hidden md:flex fixed top-0 left-0 w-full h-[72px] border-b border-card-border bg-background z-50">
+      <nav className="hidden md:flex fixed top-0 left-0 w-full h-[72px] border-b border-gray-200 bg-white z-50 transition-all">
         <div className="max-w-7xl mx-auto w-full px-6 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <img src="/logo.png" alt="Citizen Voice Logo" className="h-10 w-auto" />
+            <img src="/logo.png" alt="Civic Voice Logo" className="h-10 w-auto" />
           </Link>
 
           {/* Links */}
@@ -84,7 +84,7 @@ export default function Navbar() {
             >
               {user ? (
                 <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-lg shadow-sm border border-blue-100">
-                  {getUserEmoji(user.uid || user.email || "")}
+                  {role === "admin" ? <Shield size={18} className="text-accent-blue" /> : getUserEmoji(user.uid || user.email || "")}
                 </div>
               ) : (
                 <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
@@ -119,7 +119,7 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile Bottom Navigation Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-[60px] border-t border-card-border bg-background flex justify-around items-center z-50 px-2 pb-safe">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-[60px] border-t border-gray-200 bg-white flex justify-around items-center z-50 px-2 pb-safe shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
         {navItems
           .filter((item) => item.show)
           .map((item) => {
@@ -143,7 +143,7 @@ export default function Navbar() {
         <Link href={profileHref} className="flex items-center justify-center p-3 relative">
           {user ? (
             <div className="w-7 h-7 rounded-full bg-blue-50 flex items-center justify-center text-sm shadow-sm border border-blue-100">
-              {getUserEmoji(user.uid || user.email || "")}
+              {role === "admin" ? <Shield size={16} className="text-accent-blue" /> : getUserEmoji(user.uid || user.email || "")}
             </div>
           ) : (
             <UserIcon size={26} strokeWidth={1.5} className={pathname === profileHref ? "text-gray-900" : "text-gray-500"} />

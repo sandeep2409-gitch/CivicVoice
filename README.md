@@ -1,38 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Civic Voice 🏛️
 
-## Getting Started
+**Civic Voice** is an AI-powered community platform designed to bridge the gap between citizens and local authorities, enabling faster resolution of civic issues.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🔗 Submission Links
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* **Deployed Application Link (Google Cloud):** [Insert your Google Cloud deployment link here]
+* **GitHub Repository Link:** [Insert your GitHub repo link here]
+* **Project Description (Google Doc):** [Insert your Google Doc link here]
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📝 Project Description (For Hackathon Submission)
 
-## Learn More
+*Note: The following section contains all the required information needed to generate the mandatory Project Description Google Doc submission.*
 
-To learn more about Next.js, take a look at the following resources:
+### Problem Statement Selected
+In many rapidly growing cities, there is a severe disconnect between the community and local administration. Citizens often struggle to report civic issues (such as broken infrastructure, sanitation problems, or traffic hazards) through complicated, outdated channels. When reports are finally made, administrators are overwhelmed with unorganized, duplicate complaints and lack a reliable way to prioritize them based on actual urgency, leading to delayed resolutions and community frustration.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Solution Overview
+**Civic Voice** solves this by providing a hyper-streamlined, AI-powered issue reporting and tracking platform. Citizens can instantly report problems by simply snapping a photo and writing a brief caption. Behind the scenes, the platform leverages Google Gemini AI to automatically analyze the image and text, categorizing the issue and assigning an objective severity score. 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The platform then routes this into a unified Community Feed, where neighbors can upvote ("confirm") issues to increase their priority. Administrators receive a clean, data-rich Dashboard that automatically ranks incoming reports based on the AI's severity assessment and community velocity, allowing them to instantly identify and resolve the most critical problems.
 
-## Deploy on Vercel
+### Key Features
+* **AI-Assisted Reporting:** Citizens upload photos and brief descriptions; AI automatically categorizes the issue (e.g., Infrastructure, Sanitation, Safety) and assigns a priority level.
+* **Community Validation:** A real-time, interactive feed allows local residents to view and "confirm" nearby issues, boosting their visibility and priority score.
+* **Intelligent Admin Dashboard:** A locked-down command center for authorities that aggregates reports, provides live data visualizations of issue statuses, and ranks complaints using an algorithm combining AI severity and community confirmations.
+* **Transparent Resolution Tracking:** When admins mark an issue as "Resolved," the community feed instantly updates with a prominent watermark, closing the feedback loop and building trust.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Technologies Used
+* **Frontend Framework:** Next.js (App Router, React 18)
+* **Styling & UI:** Tailwind CSS, Lucide React (Icons)
+* **Data Visualization:** Recharts
+* **Backend & Database:** Firebase (Firestore)
+* **Authentication:** Firebase Auth
+* **Image Hosting:** Cloudinary
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# CitizenVoice
-# CitizenVoice
+### Google Technologies Utilized
+1. **Google Gemini API (`gemini-3.1-flash-lite`):** 
+   * Used as the core intelligence engine for the platform. It processes the raw, unstructured issue descriptions provided by users and returns structured, JSON-formatted data containing the issue's category, a concise summary, suggested administrative actions, and a critical severity ranking (High, Medium, Low).
+2. **Google Cloud Platform (GCP):** 
+   * The application is deployed and hosted on Google Cloud infrastructure for reliable, scalable production access.
+3. **Firebase (Google):** 
+   * **Firestore:** Serves as the real-time NoSQL database syncing reports instantly between the citizen feed and the admin dashboard.
+   * **Firebase Authentication:** Handles secure user onboarding and Role-Based Access Control (RBAC) to differentiate between standard citizens and authorized administrators.
+
+---
+
+## 🛠️ Local Development Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/civic-voice.git
+   cd civic-voice
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Variables:** Create a `.env.local` file with the following keys:
+   ```env
+   # Firebase Configuration
+   NEXT_PUBLIC_FIREBASE_API_KEY=your_key
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_domain
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_id
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_bucket
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender
+   NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+   NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement
+
+   # Google Gemini API
+   GEMINI_API_KEY=your_gemini_key
+
+   # Cloudinary
+   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
+   NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=your_upload_preset
+   ```
+
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```

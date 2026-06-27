@@ -25,7 +25,7 @@ export default function ProtectedRoute({
       return;
     }
 
-    if (requiredRole === "admin" && role !== "admin") {
+    if (requiredRole && role !== requiredRole) {
       router.replace("/login?error=unauthorized");
       return;
     }
@@ -43,7 +43,7 @@ export default function ProtectedRoute({
   }
 
   if (!user) return null;
-  if (requiredRole === "admin" && role !== "admin") return null;
+  if (requiredRole && role !== requiredRole) return null;
 
   return <>{children}</>;
 }

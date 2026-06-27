@@ -5,12 +5,12 @@ import { collection, query, where, getDocs, deleteDoc, doc } from "firebase/fire
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/app/context/AuthContext";
 import ProtectedRoute from "@/app/components/ProtectedRoute";
-import { AlertTriangle, MapPin, Loader2, Trash2 } from "lucide-react";
+import { AlertTriangle, MapPin, Loader2, Trash2, Shield } from "lucide-react";
 
 import { getUserEmoji } from "@/lib/utils";
 
 function ProfilePageContent() {
-  const { user, logout } = useAuth();
+  const { user, role, logout } = useAuth();
   const [reports, setReports] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,7 +30,7 @@ function ProfilePageContent() {
       const data = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
-      }));
+      })) as any[];
       
       // Sort by createdAt descending
       data.sort((a, b) => {
@@ -83,17 +83,17 @@ function ProfilePageContent() {
   };
 
   return (
-    <main className="min-h-screen bg-background text-foreground pb-20 md:pb-0">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 md:py-12">
+    <main className="min-h-screen bg-[#FAFAFA] pt-24 pb-20 md:pb-12">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6">
         {/* Profile Header */}
         <div className="flex flex-col items-center mb-10 animate-fade-in">
           <div className="w-24 h-24 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-5xl mb-4 shadow-sm">
-            {getUserEmoji(user?.uid || user?.email || "")}
+            {role === "admin" ? <Shield size={48} className="text-blue-600" /> : getUserEmoji(user?.uid || user?.email || "")}
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold font-serif text-slate-900 mb-1">
             {user?.displayName || "Citizen"}
           </h1>
-          <p className="text-gray-500">{user?.email}</p>
+          <p className="text-slate-500">{user?.email}</p>
           
           <div className="flex gap-4 mt-6">
             <div className="text-center">
@@ -110,14 +110,14 @@ function ProfilePageContent() {
           
           <button 
             onClick={logout}
-            className="mt-6 md:hidden px-6 py-2 rounded-lg border border-gray-200 text-gray-600 font-medium text-sm"
+            className="mt-8 md:hidden px-6 py-2 rounded-md border border-gray-300 text-slate-700 font-semibold text-sm hover:bg-gray-100 transition-colors"
           >
             Log Out
           </button>
         </div>
 
         <div className="border-t border-gray-200 pt-8 animate-slide-up">
-          <h2 className="text-lg font-bold mb-6 text-gray-900">My Reports</h2>
+          <h2 className="text-2xl font-bold font-serif mb-6 text-slate-900">My Reports</h2>
           
           {loading ? (
             <div className="flex items-center justify-center py-12 text-gray-400">
@@ -131,8 +131,8 @@ function ProfilePageContent() {
           ) : (
             <div className="space-y-6">
               {reports.map((report) => (
-                <div key={report.id} className="insta-card overflow-hidden">
-                  <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <div key={report.id} className="bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.02)] border border-gray-200 overflow-hidden">
+                  <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-[#FAFAFA]">
                     <div className="flex items-center gap-2 text-xs text-gray-500">
                       <span className="font-semibold text-gray-900">{report.category}</span>
                       <span>•</span>

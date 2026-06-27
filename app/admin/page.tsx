@@ -151,37 +151,37 @@ function AdminPageContent() {
   ];
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      <div className="max-w-7xl mx-auto px-6 py-12">
+    <main className="min-h-screen bg-[#FAFAFA] pt-24 pb-20 md:pb-12">
+      <div className="max-w-7xl mx-auto px-6">
         <div className="mb-10 animate-fade-in">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-full bg-gray-900 text-white flex items-center justify-center shadow-sm">
+            <div className="w-10 h-10 rounded-md bg-blue-600 text-white flex items-center justify-center shadow-sm">
               <Shield size={20} />
             </div>
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+            <h1 className="text-4xl font-bold font-serif tracking-tight text-slate-900">
               Admin Panel
             </h1>
           </div>
-          <p className="text-gray-500">
+          <p className="text-slate-500 text-lg">
             Manage, review, and resolve community reports.
           </p>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 stagger">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8 stagger">
           {stats.map((stat) => {
             const Icon = stat.icon;
             return (
-              <div key={stat.label} className="insta-card p-6 animate-slide-up">
+              <div key={stat.label} className="bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.02)] border border-gray-200 p-6 animate-slide-up">
                 <div className="flex items-center gap-3 mb-3">
                   <div
-                    className={`w-10 h-10 rounded-full ${stat.bgColor} border ${stat.borderColor} flex items-center justify-center`}
+                    className={`w-10 h-10 rounded-md ${stat.bgColor} border ${stat.borderColor} flex items-center justify-center`}
                   >
                     <Icon size={20} className={stat.color} />
                   </div>
-                  <p className="text-sm font-medium text-gray-500">{stat.label}</p>
+                  <p className="text-sm font-semibold text-slate-600">{stat.label}</p>
                 </div>
-                <p className={`text-4xl font-bold ${stat.color}`}>
+                <p className={`text-4xl font-bold font-serif ${stat.color}`}>
                   {stat.value}
                 </p>
               </div>
@@ -225,8 +225,8 @@ function AdminPageContent() {
 
         {/* Reports List */}
         {loading ? (
-          <div className="flex items-center gap-3 text-gray-500 py-12 justify-center">
-            <Loader2 size={24} className="animate-spin text-gray-400" />
+          <div className="flex items-center gap-3 text-slate-500 py-12 justify-center">
+            <Loader2 size={24} className="animate-spin text-slate-400" />
             Loading reports...
           </div>
         ) : (
@@ -234,7 +234,7 @@ function AdminPageContent() {
             {sortedReports.map((report) => (
               <div
                 key={report.id}
-                className={`insta-card p-6 animate-slide-up ${
+                className={`bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.02)] border border-gray-200 p-6 animate-slide-up ${
                   report.status === "Resolved" ? "opacity-70 bg-gray-50" : ""
                 }`}
               >

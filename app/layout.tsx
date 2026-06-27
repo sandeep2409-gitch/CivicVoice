@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Citizen Voice — Community Issue Reporting",
+  title: "Civic Voice — Community Issue Reporting",
   description:
     "Empowering communities to report, verify, and resolve civic issues using AI.",
 };
